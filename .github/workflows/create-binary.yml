@@ -1,0 +1,31 @@
+name: Create Binaries
+on: 
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  default-version:
+    name: Setup default version
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+        architecture: x64
+    - name: Install tools
+      run: python -m pip -r requirements.txt
+    - name: Create binary
+      run: pyinstaller --onefile -w src/CallBoard.py
+
