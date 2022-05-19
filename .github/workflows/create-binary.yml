@@ -28,10 +28,11 @@ jobs:
       run: python -m pip install -r requirements.txt
     - name: Create binary
       run: pyinstaller --onefile -w src/CallBoard.py
-    - name: Show files
-      run: find .
-    # - name: Archive code coverage results
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: ${{ matrix.os }}
-    #     path: output/test/code-coverage.html
+    # - name: Show files
+    #   run: find .
+    - name: Archive code coverage results
+      uses: actions/upload-artifact@v3
+        # if: ${{ matrix.os ==  "macos-latest"}}
+      with:
+        name: dist
+        path: ./dist
