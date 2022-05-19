@@ -17,11 +17,11 @@ def getStationUrl(stationName: str):
 	currentTime = datetime.datetime.now()
 	return "https://www.schedulesource.net/Enterprise/teamwork/services/genericio.aspx?token={}&entitytype=ScheduleShift&Fields=LastName,FirstName&MaxDate={}&StationName={}&ShiftStart={{<=}}1900-01-{}T{}&ShiftEnd={{>=}}1900-01-{}T{}".format(
 		secrets.scheduleSource.token,
-		currentTime.strftime("%m/%d/%Y"),
+		(datetime.datetime.today() - datetime.timedelta(days=1)).strftime("%m/%d/%Y") if currentTime.hour <= 1 else currentTime.strftime("%m/%d/%Y"),
 		stationName,
-		"02" if currentTime.hour < 1 else "01",
+		"02" if currentTime.hour <= 1 else "01",
 		currentTime.strftime("%H:%M:%S"),
-		"02" if currentTime.hour < 1 else "01",
+		"02" if currentTime.hour <= 1 else "01",
 		currentTime.strftime("%H:%M:%S")
 	)
 
