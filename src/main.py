@@ -1,13 +1,13 @@
 import sys
 from PyQt5.QtWidgets import * # will limit once I know what I'm using
-import Header, Body, Footer
+from ui import body, footer, header
 
 class MainWindowLayout(QVBoxLayout):
     def __init__(self):
         super().__init__()
-        header = Header.Header()
-        body = Body.Body()
-        footer = Footer.Footer()
+        header = header.Header()
+        body = body.Body()
+        footer = footer.Footer()
 
         self.addLayout(header)
         self.addLayout(body)
@@ -24,6 +24,7 @@ class Window(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    app.setStyle(QStyleFactory.create('Fusion'))
     window = Window()
     window.show()
     sys.exit(app.exec_())
