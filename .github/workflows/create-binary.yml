@@ -31,14 +31,14 @@ jobs:
     # - name: Show files
     #   run: find .
     - name: Archive code coverage results
-      if: ${{ matrix.os ==  "macos-latest"}}
+      if: ${{ matrix.os == 'macos-latest' }}
       uses: actions/upload-artifact@v3
       with:
         name: CallBoard-MacOS.run
         path: ./dist/CallBoard
 
     - name: Archive code coverage results
-      if: ${{ matrix.os ==  "windows-latest"}}
+      if: ${{ matrix.os ==  'windows-latest'}}
       uses: actions/upload-artifact@v3
       with:
         name: CallBoard-Windows.exe
