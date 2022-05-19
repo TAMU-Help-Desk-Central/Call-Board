@@ -5,13 +5,13 @@ from ui import body, footer, header
 class MainWindowLayout(QVBoxLayout):
     def __init__(self):
         super().__init__()
-        header = header.Header()
-        body = body.Body()
-        footer = footer.Footer()
+        headerLayout = header.Header()
+        bodyLayout = body.Body()
+        footerLayout = footer.Footer()
 
-        self.addLayout(header)
-        self.addLayout(body)
-        self.addLayout(footer)
+        self.addLayout(headerLayout)
+        self.addLayout(bodyLayout)
+        self.addLayout(footerLayout)
 
 class Window(QWidget):
     def __init__(self):
