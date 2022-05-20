@@ -177,3 +177,4 @@ if __name__ == "__main__":
 	ws.run_forever(dispatcher=rel)  # Set dispatcher to automatic reconnection
 	rel.signal(2, rel.abort)  # Keyboard Interrupt
 	rel.dispatch()
+	
