@@ -46,7 +46,7 @@ jobs:
       run: pyinstaller --onefile -w src/CallBoard.py
 
     - name: Rename result
-      run: xcopy .\dist\CallBoard.exe .\dist\github\ /I && mv .\dist\CallBoard.exe .\dist\CallBoard-Windows.exe;
+      run: xcopy .\dist\CallBoard.exe .\dist\github\ /I && mv .\dist\github\CallBoard.exe .\dist\github\CallBoard-Windows.exe;
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
