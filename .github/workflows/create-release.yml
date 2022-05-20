@@ -12,7 +12,7 @@ on:
 jobs:
   default-version:
     name: Setup default version
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
     steps:
@@ -44,5 +44,5 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        # tag_name: "${{ steps.semantic-version.outputs.version }}"
-        prerelease: true
+        tag_name: "${{ steps.semantic-version.outputs.version }}"
+        # prerelease: true
