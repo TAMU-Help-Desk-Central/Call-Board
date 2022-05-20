@@ -1,5 +1,9 @@
 name: Create Binaries
-on: 
+on:
+  # workflow_run:
+  #   workflows: ['CodeQL - On Change']
+  #   types:
+  #     - completed
   push:
     branches:
       - main
@@ -10,18 +14,24 @@ on:
       - '**.md'
 
 jobs:
-  default-version:
-    name: Setup default version
-    runs-on: ${{ matrix.os }}
+  checkout-repo:
+    name: Checkout repo
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        os: [macos-latest, windows-latest]
     steps:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
-    
+
+
+  make-binaries-windows:
+    name: Make binaries for Windows
+    needs: checkout-repo
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+    steps:
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
@@ -32,14 +42,41 @@ jobs:
     - name: Create binary
       run: pyinstaller --onefile -w src/CallBoard.py
 
-    - name: Rename result (Windows)
-      if: ${{ matrix.os ==  'windows-latest'}}
+    - name: Rename result
       run: xcopy .\dist\CallBoard.exe .\dist\github\ /I && mv .\dist\CallBoard.exe .\dist\CallBoard-Windows.exe;
 
-    - name: Rename result (MacOS)
-      if: ${{ matrix.os ==  'macos-latest'}}
+
+  make-binaries-macos:
+    name: Make binaries for MacOS
+    needs: checkout-repo
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+        architecture: x64
+    - name: Install tools
+      run: python -m pip install -r requirements.txt
+    - name: Create binary
+      run: pyinstaller --onefile -w src/CallBoard.py
+
+    - name: Rename result
       run: mkdir ./dist/github; mv ./dist/CallBoard ./dist/github/CallBoard-MacOS.run
 
+
+
+
+jobs:
+  create-release:
+    name: Create release
+    needs: [make-binaries-windows, make-binaries-macos]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
     - uses: paulhatch/semantic-version@v4.0.2
       id: semantic-version
       with:
