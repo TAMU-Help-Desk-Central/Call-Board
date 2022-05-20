@@ -1,4 +1,4 @@
-name: Create Binaries
+name: Get version
 on: 
   push:
     branches:
@@ -17,7 +17,25 @@ jobs:
       fail-fast: false
     steps:
     - uses: actions/checkout@v3
-    - name: Semantic Release
-      uses: cycjimmy/semantic-release-action@v3
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+    - uses: paulhatch/semantic-version@v4.0.2
+      with:
+        # The prefix to use to identify tags
+        tag_prefix: "v"
+        # A string which, if present in a git commit, indicates that a change represents a
+        # major (breaking) change, supports regular expressions wrapped with '/'
+        major_pattern: "(MAJOR)"
+        # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+        minor_pattern: "(MINOR)"
+        # A string to determine the format of the version output
+        format: "${major}.${minor}.${patch}-prerelease${increment}"
+        # Optional path to check for changes. If any changes are detected in the path the
+        # 'changed' output will true. Enter multiple paths separated by spaces.
+        change_path: "src"
+        # Named version, will be used as suffix for name version tag
+        namespace: call-board
+        # If this is set to true, *every* commit will be treated as a new version.
+        bump_each_commit: false
+        # If true, the body of commits will also be searched for major/minor patterns to determine the version type.
+        search_commit_body: false
+        # The output method used to generate list of users, 'csv' or 'json'.
+        user_format_type: "csv"
