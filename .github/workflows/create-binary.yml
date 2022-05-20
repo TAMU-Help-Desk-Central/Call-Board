@@ -66,10 +66,6 @@ jobs:
     - name: Rename result
       run: mkdir ./dist/github; mv ./dist/CallBoard ./dist/github/CallBoard-MacOS.run
 
-
-
-
-jobs:
   create-release:
     name: Create release
     needs: [make-binaries-windows, make-binaries-macos]
