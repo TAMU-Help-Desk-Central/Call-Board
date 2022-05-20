@@ -19,6 +19,9 @@ jobs:
         os: [macos-latest, windows-latest]
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
@@ -28,9 +31,14 @@ jobs:
       run: python -m pip install -r requirements.txt
     - name: Create binary
       run: pyinstaller --onefile -w src/CallBoard.py
-    # - name: Show files
-    #   run: find .
 
+    - name: Rename result
+      if: ${{ matrix.os ==  'windows-latest'}}
+      run: xcopy ./dist/CallBoard.exe ./dist/github/ /I && mv ./dist/CallBoard.exe ./dist/CallBoard-Windows.exe;
+
+    - name: Rename result
+      if: ${{ matrix.os ==  'macos-latest'}}
+      run: mkdir ./dist/github; mv ./dist/CallBoard ./dist/github/CallBoard-MacOS.run
 
     - uses: paulhatch/semantic-version@v4.0.2
       id: semantic-version
@@ -53,13 +61,7 @@ jobs:
         bump_each_commit: true
 
 
-    - name: Rename result
-      if: ${{ matrix.os ==  'windows-latest'}}
-      run: xcopy ./dist/CallBoard.exe ./dist/github/CallBoard-Windows.exe
 
-    - name: Rename result
-      if: ${{ matrix.os ==  'macos-latest'}}
-      run: mkdir ./dist/github; mv ./dist/CallBoard ./dist/github/CallBoard-MacOS.run
 
     - name: Archive code coverage results
       uses: actions/upload-artifact@v3
