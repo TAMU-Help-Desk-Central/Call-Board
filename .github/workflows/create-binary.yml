@@ -14,24 +14,27 @@ on:
       - '**.md'
 
 jobs:
-  checkout-repo:
-    name: Checkout repo
-    runs-on: ubuntu-latest
+  # checkout-repo:
+  #   name: Checkout repo
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: false
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #     with:
+  #       fetch-depth: 0
+
+
+  make-binaries-windows:
+    name: Make binaries for Windows
+    # needs: checkout-repo
+    runs-on: windows-latest
     strategy:
       fail-fast: false
     steps:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
-
-
-  make-binaries-windows:
-    name: Make binaries for Windows
-    needs: checkout-repo
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-    steps:
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
@@ -45,14 +48,23 @@ jobs:
     - name: Rename result
       run: xcopy .\dist\CallBoard.exe .\dist\github\ /I && mv .\dist\CallBoard.exe .\dist\CallBoard-Windows.exe;
 
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: CallBoard-Windows.exe
+        path: ./dist/github/CallBoard-Windows.exe
+
 
   make-binaries-macos:
     name: Make binaries for MacOS
-    needs: checkout-repo
+    # needs: checkout-repo
     runs-on: macos-latest
     strategy:
       fail-fast: false
     steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
@@ -66,6 +78,12 @@ jobs:
     - name: Rename result
       run: mkdir ./dist/github; mv ./dist/CallBoard ./dist/github/CallBoard-MacOS.run
 
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: CallBoard-MacOS.run
+        path: ./dist/github/CallBoard-MacOS.run
+
   create-release:
     name: Create release
     needs: [make-binaries-windows, make-binaries-macos]
@@ -73,6 +91,12 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: CallBoard-Windows.exe
+    - uses: actions/download-artifact@v2
+      with:
+        name: CallBoard-MacOS.run
     - uses: paulhatch/semantic-version@v4.0.2
       id: semantic-version
       with:
@@ -94,13 +118,6 @@ jobs:
         bump_each_commit: true
 
 
-
-
-    - name: Archive code coverage results
-      uses: actions/upload-artifact@v3
-      with:
-        name: binaries
-        path: ./dist/github/
     
     - name: Release
       uses: softprops/action-gh-release@v1
@@ -108,6 +125,6 @@ jobs:
         tag_name: "${{ steps.semantic-version.outputs.version }}"
         draft: true
         files: |
-          ./dist/github/CallBoard-Windows.exe
-          ./dist/github/CallBoard-MacOS.run
+          ./CallBoard-Windows.exe
+          ./CallBoard-MacOS.run
 
