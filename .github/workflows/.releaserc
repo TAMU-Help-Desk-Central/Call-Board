@@ -1,0 +1,5 @@
+{
+  "branches": ["master", "next"],
+  "repositoryUrl": "https://github.com/TAMU-Help-Desk-Central/Call-Board.git",
+  "debug": true
+}
