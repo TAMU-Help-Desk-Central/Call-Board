@@ -25,6 +25,7 @@ class Window(QWidget):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setStyle(QStyleFactory.create('Fusion'))
+    app.setStyleSheet("QVBoxLayout { background-color:black }")
     window = Window()
     window.show()
     sys.exit(app.exec_())

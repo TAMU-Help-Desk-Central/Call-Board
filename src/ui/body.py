@@ -1,7 +1,6 @@
-import sys
-import PyQt5
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import * # will limit once I know what I'm using
+from ui import queueAndPosData
 
 class AgentState(QTableWidget):
     def __init__(self):
@@ -39,6 +38,5 @@ class Body(QHBoxLayout):
     def __init__(self):
         super().__init__()
 
-        midLabel = QLabel("Middle Section")
         self.addWidget(AgentState())
-        self.addWidget(midLabel)
+        self.addLayout(queueAndPosData.QueueAndPositionState())
