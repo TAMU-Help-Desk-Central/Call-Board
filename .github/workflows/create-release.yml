@@ -20,7 +20,9 @@ jobs:
       with:
         fetch-depth: 0
 
+
     - uses: paulhatch/semantic-version@v4.0.2
+      id: semantic-version
       with:
         # The prefix to use to identify tags
         tag_prefix: "v"
@@ -38,3 +40,9 @@ jobs:
         namespace: call-board
         # If this is set to true, *every* commit will be treated as a new version.
         bump_each_commit: true
+    
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: "${{ steps.semantic-version.outputs.version }}"
+        prerelease: true
