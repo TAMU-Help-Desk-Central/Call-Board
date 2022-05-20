@@ -20,8 +20,7 @@ jobs:
       with:
         fetch-depth: 0      
     - name: check tags
-      run: git fetch --tags --all
-      run: git describe --tags --abbrev=0
+      run: git fetch --tags --all; git describe --tags --abbrev=0
 
     - uses: paulhatch/semantic-version@v4.0.2
       with:
