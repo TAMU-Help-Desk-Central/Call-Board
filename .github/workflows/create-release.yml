@@ -37,4 +37,4 @@ jobs:
         # Named version, will be used as suffix for name version tag
         namespace: call-board
         # If this is set to true, *every* commit will be treated as a new version.
-        bump_each_commit: false
+        bump_each_commit: true
