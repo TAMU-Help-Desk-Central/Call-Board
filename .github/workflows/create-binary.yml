@@ -32,11 +32,11 @@ jobs:
     - name: Create binary
       run: pyinstaller --onefile -w src/CallBoard.py
 
-    - name: Rename result
+    - name: Rename result (Windows)
       if: ${{ matrix.os ==  'windows-latest'}}
-      run: xcopy ./dist/CallBoard.exe ./dist/github/ /I && mv ./dist/CallBoard.exe ./dist/CallBoard-Windows.exe;
+      run: xcopy .\dist\CallBoard.exe .\dist\github\ /I && mv .\dist\CallBoard.exe .\dist\CallBoard-Windows.exe;
 
-    - name: Rename result
+    - name: Rename result (MacOS)
       if: ${{ matrix.os ==  'macos-latest'}}
       run: mkdir ./dist/github; mv ./dist/CallBoard ./dist/github/CallBoard-MacOS.run
 
