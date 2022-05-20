@@ -1,5 +1,14 @@
 {
-  "branches": ["master", "next"],
+  "branches": ["main"],
   "repositoryUrl": "https://github.com/TAMU-Help-Desk-Central/Call-Board.git",
-  "debug": true
+  "debug": true,
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    ["@semantic-release/github", {
+      "assets": [
+        {"path": "src/CallBoard.py", "label": "Main Script"}
+      ]
+    }]
+  ]
 }
