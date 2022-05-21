@@ -1,0 +1,9 @@
+# .coveragerc to control coverage.py
+[run]
+relative_files = True
+branch = True
+
+[tool:pytest]
+addopts = --cov=src --cov=src/integrations
+
+pytest --cov-config=.coveragerc -q ./tests/integration_tests.py --cov=src --cov=src/integrations --cov-report xml

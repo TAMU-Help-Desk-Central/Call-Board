@@ -1,0 +1,10 @@
+[flake8]
+exclude =
+    tests,
+    .venv,
+    __pycache__,
+    .git,
+    .pytest_cache,
+    .github
+count = True
+statistics = True

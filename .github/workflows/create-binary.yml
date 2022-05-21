@@ -1,0 +1,130 @@
+name: Create Binaries
+on:
+  workflow_run:
+    workflows: ['CodeQL - On Change']
+    types:
+      - completed
+  # push:
+  #   branches:
+  #     - main
+  #   paths-ignore:
+  #     - '**.md'
+  # pull_request:
+  #   paths-ignore:
+  #     - '**.md'
+
+jobs:
+  # checkout-repo:
+  #   name: Checkout repo
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: false
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #     with:
+  #       fetch-depth: 0
+
+
+  make-binaries-windows:
+    name: Make binaries for Windows
+    # needs: checkout-repo
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+        architecture: x64
+    - name: Install tools
+      run: python -m pip install -r requirements.txt
+    - name: Create binary
+      run: pyinstaller --onefile -w src/CallBoard.py
+
+    - name: Rename result
+      run: xcopy .\dist\CallBoard.exe .\dist\github\ /I && mv .\dist\github\CallBoard.exe .\dist\github\CallBoard-Windows.exe;
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: CallBoard-Windows.exe
+        path: ./dist/github/CallBoard-Windows.exe
+
+
+  make-binaries-macos:
+    name: Make binaries for MacOS
+    # needs: checkout-repo
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+        architecture: x64
+    - name: Install tools
+      run: python -m pip install -r requirements.txt
+    - name: Create binary
+      run: pyinstaller --onefile -w src/CallBoard.py
+
+    - name: Rename result
+      run: mkdir ./dist/github; mv ./dist/CallBoard ./dist/github/CallBoard-MacOS.run
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: CallBoard-MacOS.run
+        path: ./dist/github/CallBoard-MacOS.run
+
+  create-release:
+    name: Create release
+    needs: [make-binaries-windows, make-binaries-macos]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: CallBoard-Windows.exe
+    - uses: actions/download-artifact@v2
+      with:
+        name: CallBoard-MacOS.run
+    - uses: paulhatch/semantic-version@v4.0.2
+      id: semantic-version
+      with:
+        # The prefix to use to identify tags
+        tag_prefix: "v"
+        # A string which, if present in a git commit, indicates that a change represents a
+        # major (breaking) change, supports regular expressions wrapped with '/'
+        major_pattern: "(MAJOR)"
+        # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+        minor_pattern: "(MINOR)"
+        # A string to determine the format of the version output
+        format: "${major}.${minor}.${patch}-prerelease${increment}"
+        # Optional path to check for changes. If any changes are detected in the path the
+        # 'changed' output will true. Enter multiple paths separated by spaces.
+        change_path: "src"
+        # Named version, will be used as suffix for name version tag
+        namespace: call-board
+        # If this is set to true, *every* commit will be treated as a new version.
+        bump_each_commit: true
+
+
+    
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: "${{ steps.semantic-version.outputs.version }}"
+        draft: true
+        files: |
+          ./CallBoard-Windows.exe
+          ./CallBoard-MacOS.run
+
