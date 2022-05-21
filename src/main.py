@@ -31,6 +31,7 @@ class Window(QWidget):
         mainWindowLayout = MainWindowLayout()
         self.setLayout(mainWindowLayout) # TODO: Change to QBorderLayout
 
+# If this is the main file, run the application
 if __name__ == '__main__':
     # Create and initialize the application
     app = QApplication(sys.argv)
