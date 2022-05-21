@@ -1,3 +1,4 @@
+import queue
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import * # will limit once I know what I'm using
 from ui import queueAndPosData, snowData
@@ -15,7 +16,7 @@ class AgentState(QTableWidget):
         self.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
 
         # Initialize rows
-        self.rowCount = 4
+        self.rowCount = 0
         self.fillRows()
 
         # Disable focusing cells (unless clicked... don't click on the cells)
@@ -31,13 +32,19 @@ class AgentState(QTableWidget):
             rowHeaderItem = QTableWidgetItem("   ")  # Sets the thickness of the header
             rowHeaderItem.setBackground(QtGui.QColor(0, 255, 0))  # Colors the header to the ready state
             self.setVerticalHeaderItem(i, rowHeaderItem)
-            self.setItem(i, 0, QTableWidgetItem("Braeden S."))  # Set the technician name
-            self.setItem(i, 1, QTableWidgetItem(str(6 - i) + ":00"))  # Set the time in state
+            self.setItem(i, 0, QTableWidgetItem("x"))  # Set the technician name
+            self.setItem(i, 1, QTableWidgetItem("x" + ":00"))  # Set the time in state
 
 class Body(QHBoxLayout):
     def __init__(self):
         super().__init__()
 
-        self.addWidget(AgentState())
-        self.addLayout(queueAndPosData.QueueAndPositionState())
-        self.addLayout(snowData.ServiceNowData())
+        # Initialize the three primary components
+        agentState = AgentState()
+        queuePosData = queueAndPosData.QueueAndPositionState()
+        serviceNowData = snowData.ServiceNowData()
+
+        # Attach the three primary components
+        self.addWidget(agentState)
+        self.addLayout(queuePosData)
+        self.addLayout(serviceNowData)
