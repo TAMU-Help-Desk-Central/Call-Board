@@ -1,6 +1,6 @@
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import * # will limit once I know what I'm using
-from ui import queueAndPosData
+from ui import queueAndPosData, snowData
 
 class AgentState(QTableWidget):
     def __init__(self):
@@ -40,3 +40,4 @@ class Body(QHBoxLayout):
 
         self.addWidget(AgentState())
         self.addLayout(queueAndPosData.QueueAndPositionState())
+        self.addLayout(snowData.ServiceNowData())
