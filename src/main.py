@@ -8,13 +8,16 @@ class MainWindowLayout(QVBoxLayout):
 
         # Initialize the primary components of the window
         headerLayout = header.Header()
-        bodyLayout = body.Body()
+        self.bodyLayout = body.Body()
         footerLayout = footer.Footer()
 
         # Attach components
         self.addLayout(headerLayout)
-        self.addLayout(bodyLayout)
+        self.addLayout(self.bodyLayout)
         self.addLayout(footerLayout)
+    
+    def getBody(self) -> body.Body:
+        return self.bodyLayout
 
 class Window(QWidget):
     def __init__(self):

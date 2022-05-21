@@ -56,10 +56,13 @@ class OnHoldTriage(QHBoxLayout):
         # Attach the two layouts
         self.addLayout(onHoldLayout)
         self.addLayout(triageLayout)
-
-    def updateIncidents(self, onHold:int, triage:int):
-        # Set the text of the two labels to the corresponding updated number
+    
+    def updateOnHold(self, onHold:int):
+        # Set the text of on hold label
         self.onHold.setText(str(onHold))
+
+    def updateTriage(self, triage:int):
+        # Set the text of on triage label
         self.triage.setText(str(triage))
 
 class ServiceNowData(QVBoxLayout):
@@ -78,4 +81,21 @@ class ServiceNowData(QVBoxLayout):
     def updateIncidents(self, over4:int, over2:int, under2:int, onHold:int, triage:int):
         # Call the lower-level methods which will update the data
         self.activeLayout.updateIncidents(over4, over2, under2)
-        self.ohtLayout.updateIncidents(onHold, triage)
+
+        # Call the lower-level method that updates on hold incidents
+        self.ohtLayout.updateOnHold(onHold)
+
+        # Call the lower-level method that updates triage calls
+        self.ohtLayout.updateTriage(triage)
+    
+    def updateActiveIncidents(self, over4:int, over2:int, under2:int):
+        # Call the lower-level method that updates active incident counts
+        self.activeLayout.updateIncidents(over4, over2, under2)
+
+    def updateOnHold(self, onHold:int):
+        # Call the lower-level method that updates on hold incidents
+        self.ohtLayout.updateOnHold(onHold)
+
+    def updateTriage(self, triage:int):
+        # Call the lower-level method that updates triage calls
+        self.ohtLayout.updateTriage(triage)

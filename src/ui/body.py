@@ -1,4 +1,4 @@
-import queue
+import datetime
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import * # will limit once I know what I'm using
 from ui import queueAndPosData, snowData
@@ -40,11 +40,39 @@ class Body(QHBoxLayout):
         super().__init__()
 
         # Initialize the three primary components
-        agentState = AgentState()
-        queuePosData = queueAndPosData.QueueAndPositionState()
-        serviceNowData = snowData.ServiceNowData()
+        self.agentState = AgentState()
+        self.queuePosData = queueAndPosData.QueueAndPositionState()
+        self.serviceNowData = snowData.ServiceNowData()
 
         # Attach the three primary components
-        self.addWidget(agentState)
-        self.addLayout(queuePosData)
-        self.addLayout(serviceNowData)
+        self.addWidget(self.agentState)
+        self.addLayout(self.queuePosData)
+        self.addLayout(self.serviceNowData)
+    
+    def updatePhones(self, count:int, longestStartTime:datetime):
+        # Just call lower-level method to update the phones queue
+        self.queuePosData.updatePhones(count, longestStartTime)
+
+    def updateBomgar(self, count:int, longestStartTime:datetime):
+        # Just call lower-level method to update the bomgar queue
+        self.queuePosData.updateBomgar(count, longestStartTime)
+
+    def updatePositions(self, employees:dict[str, str]):
+        # Just call lower-level method to update the positions
+        self.queuePosData.updatePositions(employees)
+
+    def updateIncidents(self, over4:int, over2:int, under2:int, onHold:int, triage:int):
+        # Call the lower-level method which will update the queue data
+        self.serviceNowData.updateIncidents(over4, over2, under2, onHold, triage)
+
+    def updateActiveIncidents(self, over4:int, over2:int, under2:int):
+        # Call the lower-level method that updates active incident counts
+        self.serviceNowData.updateActiveIncidents(over4, over2, under2)
+
+    def updateOnHold(self, onHold:int):
+        # Call the lower-level method that updates on hold incidents
+        self.serviceNowData.updateOnHold(onHold)
+
+    def updateTriage(self, triage:int):
+        # Call the lower-level method that updates triage calls
+        self.serviceNowData.updateTriage(triage)
