@@ -77,6 +77,7 @@ class ServiceNowData(QVBoxLayout):
         self.addWidget(QLabel("ServiceNow"))
         self.addLayout(self.activeLayout)
         self.addLayout(self.ohtLayout)
+        self.addStretch()
 
     def updateIncidents(self, over4:int, over2:int, under2:int, onHold:int, triage:int):
         # Call the lower-level methods which will update the data

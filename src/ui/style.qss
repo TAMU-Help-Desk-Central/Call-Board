@@ -1,0 +1,11 @@
+QLabel { 
+    background-color: #e1e1e1;
+    border-style: solid;
+    border-width: 2px;
+    font-family: "Times New Roman";
+    font-size: 50px;
+    text-align: center;
+}
+QLabel#header { 
+    border-color: red;
+}

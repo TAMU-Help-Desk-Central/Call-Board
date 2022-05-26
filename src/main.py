@@ -1,7 +1,6 @@
 import sys
 from PyQt5.QtWidgets import * # will limit once I know what I'm using
 from ui import body, footer, header
-import pidfile
 
 class MainWindowLayout(QVBoxLayout):
     def __init__(self):
@@ -32,22 +31,18 @@ class Window(QWidget):
         mainWindowLayout = MainWindowLayout()
         self.setLayout(mainWindowLayout) # TODO: Change to QBorderLayout
 
-print('Starting process')
-try:
-    with pidfile.PIDFile():
-        print('Process started')
-        if __name__ == "__main__":
-            # Create and initialize the application
-            app = QApplication(sys.argv)
-            app.setStyle(QStyleFactory.create('Fusion'))
+if __name__ == '__main__':
+    # Create and initialize the application
+    app = QApplication(sys.argv)
+    app.setStyle(QStyleFactory.create('Fusion'))
+    with open("src/ui/style.qss", 'r') as f:
+        app.setStyleSheet(f.read())
 
-            # Create and initialize the window
-            window = Window()
+    # Create and initialize the window
+    window = Window()
 
-            # Show the window
-            window.show()
+    # Show the window
+    window.show()
 
-            # Allow the app to continue running
-            sys.exit(app.exec_())
-except pidfile.AlreadyRunningError:
-    print('Already running.')
+    # Allow the app to continue running
+    sys.exit(app.exec_())

@@ -90,6 +90,7 @@ class QueueAndPositionState(QVBoxLayout):
         self.addLayout(self.phonesQueue)
         self.addLayout(self.bomgarQueue)
         self.addLayout(self.positions)
+        self.addStretch()
     
     def updatePhones(self, count:int, longestStartTime:datetime):
         # Just call the method again on the phones queue

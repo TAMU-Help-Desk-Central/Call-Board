@@ -38,6 +38,7 @@ class AgentState(QTableWidget):
 class Body(QHBoxLayout):
     def __init__(self):
         super().__init__()
+        self.setSpacing(0)
 
         # Initialize the three primary components
         self.agentState = AgentState()
