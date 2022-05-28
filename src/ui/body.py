@@ -1,39 +1,7 @@
-import datetime
+from datetime import datetime
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import * # will limit once I know what I'm using
-from ui import queueAndPosData, snowData
-
-class AgentState(QTableWidget):
-    def __init__(self):
-        super().__init__()
-        
-        # Initialize columns
-        self.setColumnCount(2)  
-        self.setHorizontalHeaderLabels(["Technician", "Duration"])
-
-        # Set column widths
-        self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-        self.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
-
-        # Initialize rows
-        self.rowCount = 0
-        self.fillRows()
-
-        # Disable focusing cells (unless clicked... don't click on the cells)
-        self.setFocusPolicy(0)
-        self.setSelectionBehavior(0)
-    
-    def fillRows(self):
-        # Set the row count
-        self.setRowCount(self.rowCount)
-
-        # Set the data for each row (placeholder for now)
-        for i in range(self.rowCount):
-            rowHeaderItem = QTableWidgetItem("   ")  # Sets the thickness of the header
-            rowHeaderItem.setBackground(QtGui.QColor(0, 255, 0))  # Colors the header to the ready state
-            self.setVerticalHeaderItem(i, rowHeaderItem)
-            self.setItem(i, 0, QTableWidgetItem("x"))  # Set the technician name
-            self.setItem(i, 1, QTableWidgetItem("x" + ":00"))  # Set the time in state
+from ui import queueAndPosData, snowData, stateData
 
 class Body(QHBoxLayout):
     def __init__(self):
@@ -41,14 +9,14 @@ class Body(QHBoxLayout):
         self.setSpacing(0)
 
         # Initialize the three primary components
-        self.agentState = AgentState()
+        self.agentState = stateData.AgentState()
         self.queuePosData = queueAndPosData.QueueAndPositionState()
         self.serviceNowData = snowData.ServiceNowData()
 
         # Attach the three primary components
-        self.addWidget(self.agentState)
-        self.addLayout(self.queuePosData)
-        self.addLayout(self.serviceNowData)
+        self.addLayout(self.agentState, stretch=5)
+        self.addLayout(self.queuePosData, stretch=3)
+        self.addLayout(self.serviceNowData, stretch=2)
     
     def updatePhones(self, count:int, longestStartTime:datetime):
         # Just call lower-level method to update the phones queue
