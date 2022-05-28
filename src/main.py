@@ -16,7 +16,7 @@ class MainWindowLayout(QVBoxLayout):
         # Attach components
         self.addWidget(headerWidget)
         self.addWidget(self.bodyWidget)
-        self.addLayout(footerLayout)
+        self.addWidget(footerLayout)
     
     def getBody(self) -> body.Body:
         return self.bodyWidget
