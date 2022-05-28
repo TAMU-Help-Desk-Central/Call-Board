@@ -59,7 +59,6 @@ class AgentState(QVBoxLayout):
         self.headerLayout.addWidget(QLabel(""), stretch=1)
         self.headerLayout.addWidget(QLabel("Name"), stretch=20)
         self.headerLayout.addWidget(QLabel("Time"), stretch=5)
-        self.addWidget(QLabel("Time"))
         
         # Initialize the lists of the technicians' rows
         self.talkingList = QVBoxLayout()
@@ -100,7 +99,7 @@ class AgentState(QVBoxLayout):
         timer.timeout.connect(self.updateTimes)
 
         # Update the timer every second
-        timer.start(3000)  # TODO: This timer is janky for some reason. I'll fix it later.
+        timer.start(100)  # TODO: This timer is janky for some reason. I'll fix it later.
     
     def addAgent(self, name:str, state:str, startTime:datetime):
         agentRow = AgentRowData(name, state, startTime)
