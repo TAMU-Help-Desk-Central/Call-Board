@@ -5,19 +5,21 @@ from ui import body, footer, header
 class MainWindowLayout(QVBoxLayout):
     def __init__(self):
         super().__init__()
+        self.setContentsMargins(0, 0, 0, 0)
+        self.setSpacing(0)
 
         # Initialize the primary components of the window
-        headerLayout = header.Header()
-        self.bodyLayout = body.Body()
+        headerWidget = header.Header()
+        self.bodyWidget = body.Body()
         footerLayout = footer.Footer()
 
         # Attach components
-        self.addLayout(headerLayout)
-        self.addLayout(self.bodyLayout)
+        self.addWidget(headerWidget)
+        self.addWidget(self.bodyWidget)
         self.addLayout(footerLayout)
     
     def getBody(self) -> body.Body:
-        return self.bodyLayout
+        return self.bodyWidget
 
 class Window(QWidget):
     def __init__(self):
@@ -35,8 +37,6 @@ if __name__ == '__main__':
     # Create and initialize the application
     app = QApplication(sys.argv)
     app.setStyle(QStyleFactory.create('Fusion'))
-    with open("src/ui/style.qss", 'r') as f:
-        app.setStyleSheet(f.read())
 
     # Create and initialize the window
     window = Window()
