@@ -65,9 +65,13 @@ class OnHoldTriage(QHBoxLayout):
         # Set the text of on triage label
         self.triage.setText(str(triage))
 
-class ServiceNowData(QVBoxLayout):
+class ServiceNowContentsLayout(QVBoxLayout):
     def __init__(self):
         super().__init__()
+
+        # Remove all spacing around the elements
+        self.setSpacing(0)
+        self.setContentsMargins(0, 0, 0, 0)
         
         # Initialize the two separate view layouts
         self.activeLayout = Active()
@@ -77,26 +81,49 @@ class ServiceNowData(QVBoxLayout):
         self.addWidget(QLabel("ServiceNow"))
         self.addLayout(self.activeLayout)
         self.addLayout(self.ohtLayout)
+
+class ServiceNowContentsFrame(QFrame):
+    def __init__(self):
+        super().__init__()
+
+        # Set the style and width of the box
+        self.setFrameStyle(QFrame.Box)
+        self.setLineWidth(2)
+
+        # Initialize and set the layout
+        self.contentsLayout = ServiceNowContentsLayout()
+        self.setLayout(self.contentsLayout)
+
+class ServiceNowData(QVBoxLayout):
+    def __init__(self):
+        super().__init__()
+
+        # Initialize a frame that will display all of the contents
+        self.contentsFrame = ServiceNowContentsFrame()
+
+        # Surround the frame by stretches to center it
+        self.addStretch()
+        self.addWidget(self.contentsFrame)
         self.addStretch()
 
     def updateIncidents(self, over4:int, over2:int, under2:int, onHold:int, triage:int):
         # Call the lower-level methods which will update the data
-        self.activeLayout.updateIncidents(over4, over2, under2)
+        self.contentsFrame.contentsLayout.activeLayout.updateIncidents(over4, over2, under2)
 
         # Call the lower-level method that updates on hold incidents
-        self.ohtLayout.updateOnHold(onHold)
+        self.contentsFrame.contentsLayout.ohtLayout.updateOnHold(onHold)
 
         # Call the lower-level method that updates triage calls
-        self.ohtLayout.updateTriage(triage)
+        self.contentsFrame.contentsLayout.ohtLayout.updateTriage(triage)
     
     def updateActiveIncidents(self, over4:int, over2:int, under2:int):
         # Call the lower-level method that updates active incident counts
-        self.activeLayout.updateIncidents(over4, over2, under2)
+        self.contentsFrame.contentsLayout.activeLayout.updateIncidents(over4, over2, under2)
 
     def updateOnHold(self, onHold:int):
         # Call the lower-level method that updates on hold incidents
-        self.ohtLayout.updateOnHold(onHold)
+        self.contentsFrame.contentsLayout.ohtLayout.updateOnHold(onHold)
 
     def updateTriage(self, triage:int):
         # Call the lower-level method that updates triage calls
-        self.ohtLayout.updateTriage(triage)
+        self.contentsFrame.contentsLayout.ohtLayout.updateTriage(triage)
