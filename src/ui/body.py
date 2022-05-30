@@ -14,9 +14,9 @@ class BodyLayout(QHBoxLayout):
         self.serviceNowData = snowData.ServiceNowData()
 
         # Attach the three primary components
-        self.addLayout(self.agentState, stretch=5)
-        self.addLayout(self.queuePosData, stretch=3)
-        self.addLayout(self.serviceNowData, stretch=2)
+        self.addLayout(self.agentState, stretch=17)
+        self.addLayout(self.queuePosData, stretch=14)
+        self.addLayout(self.serviceNowData, stretch=9)
 
         self.agentState.addAgent("Braeden S.", "ready", datetime.now())
 

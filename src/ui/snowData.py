@@ -1,3 +1,4 @@
+from turtle import update
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import * # will limit once I know what I'm using
 
@@ -6,10 +7,14 @@ class Active(QVBoxLayout):
         super().__init__()
 
         # Initialize a label for the different incident count views
-        self.activeTotal = QLabel("x")
-        self.over4 = QLabel("x ≥ 4 hrs")
-        self.over2 = QLabel("x ≥ 2 hrs")
-        self.under2 = QLabel("x < 2 hrs")
+        self.activeTotal = QLabel("0")
+        self.activeTotal.setObjectName("IncidentCounter")
+        self.over4 = QLabel("0 ≥ 4 hrs")
+        self.over4.setObjectName("SmallIncidentCounter")
+        self.over2 = QLabel("0 ≥ 2 hrs")
+        self.over2.setObjectName("SmallIncidentCounter")
+        self.under2 = QLabel("0 < 2 hrs")
+        self.under2.setObjectName("SmallIncidentCounter")
 
         # Create the vertical layout for the time breakdown on the right
         incidentTimesLayout = QVBoxLayout()
@@ -23,14 +28,27 @@ class Active(QVBoxLayout):
         hLayout.addLayout(incidentTimesLayout)
 
         # Add a label to the top and attach the layout
-        self.addWidget(QLabel("Active Incidents"))
+        activeLabel = QLabel("Active Incidents")
+        activeLabel.setObjectName("SubSectionHeader")
+        self.addWidget(activeLabel)
         self.addLayout(hLayout)
+        self.updateIncidents(2, 0, 1)
     
     def updateIncidents(self, over4:int, over2:int, under2:int):
         # Set the individual views to hold the corresponding new value
         self.over4.setText(str(over4) + " ≥ 4 hrs")
         self.over2.setText(str(over2) + " ≥ 2 hrs")
         self.under2.setText(str(under2) + " < 2 hrs")
+
+        # Set the background color of the main incident count
+        if over4 > 0:
+            self.activeTotal.setStyleSheet("background-color: #FF8494")  # Pastel red
+        elif over2 > 0:
+            self.activeTotal.setStyleSheet("background-color: #FFD87F")  # Pastel yellow
+        elif under2 > 0:
+            self.activeTotal.setStyleSheet("background-color: #D0FFCE")  # Pastel green
+        else:
+            self.activeTotal.setStyleSheet("background-color: white")
 
         # Set the total to the sum of all the incidents
         self.activeTotal.setText(str(over4 + over2 + under2))
@@ -40,17 +58,23 @@ class OnHoldTriage(QHBoxLayout):
         super().__init__()
         
         # Initialize labels for the on hold and triage incidents
-        self.onHold = QLabel("x")
-        self.triage = QLabel("x")
+        self.onHold = QLabel("0")
+        self.triage = QLabel("0")
+        self.onHold.setObjectName("IncidentCounter")
+        self.triage.setObjectName("IncidentCounter")
         
         # Initialize and fill the vertical layout for the on hold tickets
         onHoldLayout = QVBoxLayout()
-        onHoldLayout.addWidget(QLabel("On Hold"))
+        onHoldLabel = QLabel("On Hold")
+        onHoldLabel.setObjectName("SubSectionHeader")
+        onHoldLayout.addWidget(onHoldLabel)
         onHoldLayout.addWidget(self.onHold)
 
         # Initialize and fill the vertical layout for the triage tickets
         triageLayout = QVBoxLayout()
-        triageLayout.addWidget(QLabel("Triage"))
+        triageLabel = QLabel("Triage")
+        triageLabel.setObjectName("SubSectionHeader")
+        triageLayout.addWidget(triageLabel)
         triageLayout.addWidget(self.triage)
 
         # Attach the two layouts
@@ -78,7 +102,9 @@ class ServiceNowContentsLayout(QVBoxLayout):
         self.ohtLayout = OnHoldTriage()
 
         # Add the layouts under a label for the section
-        self.addWidget(QLabel("ServiceNow"))
+        snowHeader = QLabel("ServiceNow")
+        snowHeader.setStyleSheet("background-color: #500000; color: white")
+        self.addWidget(snowHeader)
         self.addLayout(self.activeLayout)
         self.addLayout(self.ohtLayout)
 
@@ -86,9 +112,8 @@ class ServiceNowContentsFrame(QFrame):
     def __init__(self):
         super().__init__()
 
-        # Set the style and width of the box
-        self.setFrameStyle(QFrame.Box)
-        self.setLineWidth(2)
+        # Set the alignment of all text in this element to centered
+        self.setStyleSheet("QLabel { qproperty-alignment: AlignCenter; padding: 5px }")
 
         # Initialize and set the layout
         self.contentsLayout = ServiceNowContentsLayout()

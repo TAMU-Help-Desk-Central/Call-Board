@@ -25,6 +25,9 @@ class Window(QWidget):
     def __init__(self):
         super().__init__()
 
+        # Set the background color of the window
+        self.setStyleSheet("background-color: white")
+
         # Set windows title and size
         self.setWindowTitle("Call Board")
         self.resize(1920, 1080) # TODO: Set to fullscreen before deployment
