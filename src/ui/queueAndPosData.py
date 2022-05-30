@@ -1,10 +1,15 @@
 from datetime import datetime
+import queue
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import * # will limit once I know what I'm using
 
-class WaitingQueue(QVBoxLayout):
+class WaitingQueueContentsLayout(QVBoxLayout):
     def __init__(self, label:str):
         super().__init__()
+
+        # Set all spacing to 0
+        self.setSpacing(0)
+        self.setContentsMargins(0, 0, 0, 0)
 
         # Initialize member variables
         self.waitingCount = 0  # Assume there is nothing in queue at start
@@ -12,7 +17,9 @@ class WaitingQueue(QVBoxLayout):
 
         # Initialize the labels for the waiting count and highest time
         self.waitingCountLabel = QLabel("x Waiting")
+        self.waitingCountLabel.setObjectName("SubSectionHeader")
         self.waitingTimeLabel = QLabel("x:xx")
+        self.waitingTimeLabel.setObjectName("SubSectionHeader")
 
         # Create the horizontal layour for the count and time
         lowerLayout = QHBoxLayout()
@@ -20,7 +27,9 @@ class WaitingQueue(QVBoxLayout):
         lowerLayout.addWidget(self.waitingTimeLabel)
 
         # Attach the layout below a descriptive label
-        self.addWidget(QLabel(label + ":"))
+        queueLabel = QLabel(label + ":")
+        queueLabel.setObjectName("SectionHeader")
+        self.addWidget(queueLabel)
         self.addLayout(lowerLayout)
 
         # Initialize a timer to keep track of the waiting time
@@ -54,6 +63,17 @@ class WaitingQueue(QVBoxLayout):
             # Just set to zero time if nobody is waiting
             self.waitingTimeLabel.setText("0:00")
 
+class WaitingQueueFrame(QFrame):
+    def __init__(self, label:str):
+        super().__init__()
+
+        # Set the alignment of all text in this element to centered
+        self.setStyleSheet("QLabel { padding: 5px }")
+
+        # Initialize and set the layout
+        self.contentsLayout = WaitingQueueContentsLayout(label)
+        self.setLayout(self.contentsLayout)
+
 class Positions(QVBoxLayout):
     def __init__(self):
         super().__init__()
@@ -82,13 +102,13 @@ class QueueAndPositionState(QVBoxLayout):
         super().__init__()
 
         # Initialize the three components of this layout
-        self.phonesQueue = WaitingQueue("Phones")
-        self.bomgarQueue = WaitingQueue("Bomgar")
+        self.phonesQueue = WaitingQueueFrame("Phones")
+        self.bomgarQueue = WaitingQueueFrame("Bomgar")
         self.positions = Positions()
 
         # Attach the three components on this layout
-        self.addLayout(self.phonesQueue)
-        self.addLayout(self.bomgarQueue)
+        self.addWidget(self.phonesQueue)
+        self.addWidget(self.bomgarQueue)
         self.addLayout(self.positions)
         self.addStretch()
     

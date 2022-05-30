@@ -1,19 +1,28 @@
 QLabel { 
-    border-style: solid;
-    border-width: 2px;
-    border-color: #EDEDED;
     font-size: 50px;
     font-weight: bold;
 }
 
 ServiceNowContentsFrame {
-    border-color: #EDEDED;
+    border-color: #500000;
     border-style: solid;
-    border-width: 2px
+    border-width: 4px;
+}
+
+WaitingQueueFrame {
+    border-color: #500000;
+    border-style: solid;
+    border-width: 4px;
+}
+
+QLabel#SectionHeader {
+    font-size: 50px;
+    background-color: #500000;
+    color: white;
 }
 
 QLabel#SubSectionHeader {
-    font-size: 40px;
+    font-size: 45px;
     background-color: #EDEDED;
 }
 

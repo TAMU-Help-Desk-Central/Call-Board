@@ -26,7 +26,7 @@ class Window(QWidget):
         super().__init__()
 
         # Set the background color of the window
-        self.setStyleSheet("background-color: white")
+        self.setStyleSheet("background-color: #EDEDED")
 
         # Set windows title and size
         self.setWindowTitle("Call Board")

@@ -103,7 +103,7 @@ class ServiceNowContentsLayout(QVBoxLayout):
 
         # Add the layouts under a label for the section
         snowHeader = QLabel("ServiceNow")
-        snowHeader.setStyleSheet("background-color: #500000; color: white")
+        snowHeader.setObjectName("SectionHeader")
         self.addWidget(snowHeader)
         self.addLayout(self.activeLayout)
         self.addLayout(self.ohtLayout)
@@ -127,7 +127,6 @@ class ServiceNowData(QVBoxLayout):
         self.contentsFrame = ServiceNowContentsFrame()
 
         # Surround the frame by stretches to center it
-        self.addStretch()
         self.addWidget(self.contentsFrame)
         self.addStretch()
 
