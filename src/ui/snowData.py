@@ -111,9 +111,10 @@ class ServiceNowContentsLayout(QVBoxLayout):
 class ServiceNowContentsFrame(QFrame):
     def __init__(self):
         super().__init__()
+        self.setObjectName("SectionFrame")
 
         # Set the alignment of all text in this element to centered
-        self.setStyleSheet("QLabel { qproperty-alignment: AlignCenter; padding: 5px }")
+        self.setStyleSheet("QLabel { qproperty-alignment: AlignCenter; }")
 
         # Initialize and set the layout
         self.contentsLayout = ServiceNowContentsLayout()

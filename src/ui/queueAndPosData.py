@@ -66,9 +66,7 @@ class WaitingQueueContentsLayout(QVBoxLayout):
 class WaitingQueueFrame(QFrame):
     def __init__(self, label:str):
         super().__init__()
-
-        # Set the alignment of all text in this element to centered
-        self.setStyleSheet("QLabel { padding: 5px }")
+        self.setObjectName("SectionFrame")
 
         # Initialize and set the layout
         self.contentsLayout = WaitingQueueContentsLayout(label)

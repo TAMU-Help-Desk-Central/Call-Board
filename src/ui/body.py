@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import * # will limit once I know what I'm using
 from ui import queueAndPosData, snowData, stateData
@@ -18,7 +18,15 @@ class BodyLayout(QHBoxLayout):
         self.addLayout(self.queuePosData, stretch=14)
         self.addLayout(self.serviceNowData, stretch=9)
 
-        self.agentState.addAgent("Braeden S.", "ready", datetime.now())
+        self.agentState.addAgent("Mohsin K.", "work", datetime.now() - timedelta(seconds=30))
+        self.agentState.addAgent("Alex C.", "talking", datetime.now() - timedelta(minutes=45, seconds=8))
+        self.agentState.addAgent("Navya M.", "ready", datetime.now() - timedelta(minutes=4, seconds=45))
+        self.agentState.addAgent("Braeden S.", "not ready", datetime.now() - timedelta(minutes=5))
+        self.agentState.addAgent("Andrew J.", "talking", datetime.now() - timedelta(minutes=12, seconds=8))
+        self.agentState.addAgent("Nathan Z.", "ready", datetime.now() - timedelta(minutes=3, seconds=8))
+        self.agentState.addAgent("Carter S.", "ready", datetime.now() - timedelta(minutes=2, seconds=8))
+        self.agentState.addAgent("Diego I.", "not ready", datetime.now() - timedelta(minutes=33, seconds=8))
+        self.agentState.addAgent("Shane D.", "work", datetime.now() - timedelta(seconds=8))
 
 class Body(QWidget):
     def __init__(self):

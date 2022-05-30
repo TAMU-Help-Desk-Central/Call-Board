@@ -1,15 +1,10 @@
 QLabel { 
     font-size: 50px;
     font-weight: bold;
+    padding: 5px;
 }
 
-ServiceNowContentsFrame {
-    border-color: #500000;
-    border-style: solid;
-    border-width: 4px;
-}
-
-WaitingQueueFrame {
+#SectionFrame {
     border-color: #500000;
     border-style: solid;
     border-width: 4px;
