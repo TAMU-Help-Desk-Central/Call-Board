@@ -1,28 +1,32 @@
 import sys
 from PyQt5.QtWidgets import * # will limit once I know what I'm using
 from ui import body, footer, header
-import pidfile
 
 class MainWindowLayout(QVBoxLayout):
     def __init__(self):
         super().__init__()
+        self.setContentsMargins(0, 0, 0, 0)
+        self.setSpacing(0)
 
         # Initialize the primary components of the window
-        headerLayout = header.Header()
-        self.bodyLayout = body.Body()
+        headerWidget = header.Header()
+        self.bodyWidget = body.Body()
         footerLayout = footer.Footer()
 
         # Attach components
-        self.addLayout(headerLayout)
-        self.addLayout(self.bodyLayout)
-        self.addLayout(footerLayout)
+        self.addWidget(headerWidget)
+        self.addWidget(self.bodyWidget)
+        self.addWidget(footerLayout)
     
     def getBody(self) -> body.Body:
-        return self.bodyLayout
+        return self.bodyWidget
 
 class Window(QWidget):
     def __init__(self):
         super().__init__()
+
+        # Set the background color of the window
+        self.setStyleSheet("background-color: #EDEDED")
 
         # Set windows title and size
         self.setWindowTitle("Call Board")
@@ -32,22 +36,16 @@ class Window(QWidget):
         mainWindowLayout = MainWindowLayout()
         self.setLayout(mainWindowLayout) # TODO: Change to QBorderLayout
 
-print('Starting process')
-try:
-    with pidfile.PIDFile():
-        print('Process started')
-        if __name__ == "__main__":
-            # Create and initialize the application
-            app = QApplication(sys.argv)
-            app.setStyle(QStyleFactory.create('Fusion'))
+if __name__ == '__main__':
+    # Create and initialize the application
+    app = QApplication(sys.argv)
+    app.setStyle(QStyleFactory.create('Fusion'))
 
-            # Create and initialize the window
-            window = Window()
+    # Create and initialize the window
+    window = Window()
 
-            # Show the window
-            window.show()
+    # Show the window
+    window.show()
 
-            # Allow the app to continue running
-            sys.exit(app.exec_())
-except pidfile.AlreadyRunningError:
-    print('Already running.')
+    # Allow the app to continue running
+    sys.exit(app.exec_())

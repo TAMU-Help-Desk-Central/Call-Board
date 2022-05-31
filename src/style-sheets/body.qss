@@ -1,0 +1,31 @@
+QLabel { 
+    font-size: 50px;
+    font-weight: bold;
+    padding: 5px;
+}
+
+#SectionFrame {
+    border-color: #500000;
+    border-style: solid;
+    border-width: 4px;
+}
+
+QLabel#SectionHeader {
+    font-size: 50px;
+    background-color: #500000;
+    color: white;
+}
+
+QLabel#SubSectionHeader {
+    font-size: 45px;
+    background-color: #EDEDED;
+}
+
+QLabel#IncidentCounter {
+    font-size: 120px;
+}
+
+QLabel#SmallIncidentCounter {
+    font-weight: normal;
+    font-size: 35px;
+}
